@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "file": "index.js",
+  "sourceRoot": "../../../../",
+  "sources": ["contracts/quietsignal.compact", "compiler/standard-library.compact"],
+  "names": [],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;EAAA;;;;;;;;;;;;;MAsBA,AAAA,eAwBC;;;;;cAxB8B,SAAkB;;;;;;;;;;;;;;;;;;yCAAlB,SAAkB;;;;;;;;;iDAAlB,SAAkB;;;OAwBhD;;;;GACA;EA/CD;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;IAMA;;;;;;;;;;yEAA+C;IAI/C;;;;;;;;;;yEAA2C;;;;;;;GAqC1C;EC/CD,AAAA,kBAAA;oEAAA;;;EDaA,AAAA,wBAA2C;;0DAA3C,qBAA2C;;;;;;;;;;;;;;GAAA;EAS3C,AAAA,kBAwBC,4BAxB8B,SAAkB;UAEvC,YAAoC;UAGpC,iBAAmC,GAAR,SAAO;UAGlC,OAA4D,cAA7B,SAAO,UAAU,YAAU;UAC1D,cAAiD,0BAAN,OAAK;UAChD,eAAsC,GAAb,cAAY;qDAGnC;;;;;;;;;;;4KAAoB,eAAa;;;;0HAArB;;IAGpB;;;;;;;;;;2HAAoB,eAAa;;;;;wEAArB;gCAER;;;;;;;;;;;uJAAc,iBAAe;;;;qGAAvB;;YACA,cAA6C,2BAA9B;;;;;;;;;;;;;;gJAAc,iBAAe;;;0HAAvB;YAC3B,KAAM;;;;;uBAA0B,cAAY;MAA5C;;;;;;;;;;6HAAc,iBAAe;;;6HAA7B,KAAM;;;0EAAA;;YAEN,KAAM;MAAN;;;;;;;;;;6HAAc,iBAAe;;;6HAA7B,KAAM;;;0EAAA;;;GAEb;;;;;;;;;;;;;;;;IAxCD;;;;;uCAAA;;;;;;;;;;;;;;;;4GAA+C;;;;;;uCAA/C;;;;;;;;;;;;4GAA+C;;;;;;;;;;;;;;uCAA/C;;;;;;;;;;;;;;;4GAA+C;;;;;;;;;;;;;;uCAA/C;;;;;;;;;;;;;;;;;4GAA+C;;;;;;;;;KAAA;IAI/C;;;;;uCAAA;;;;;;;;;;;;;;;;4GAA2C;;;;;;uCAA3C;;;;;;;;;;;;4GAA2C;;;;;;;;;;;;;;uCAA3C;;;;;;;;;;;;;;;4GAA2C;;;;;;;;;KAAA;;;;;;;;;;;;"
+}
