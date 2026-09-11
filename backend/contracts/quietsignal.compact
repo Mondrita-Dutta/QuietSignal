@@ -1,0 +1,47 @@
+pragma language_version >= 0.23;
+
+import CompactStandardLibrary;
+
+// The public ledger state for QUIETSIGNAL Platform
+// Maps a Topic ID (Bytes<32>) to its broadcast count.
+export ledger topics: Map<Bytes<32>, Uint<32>>;
+
+// A set of used tokens across the entire platform to prevent double-submission.
+// The token will be derived off-chain as hash(topicId, secret).
+export ledger signalTokens: Set<Bytes<32>>;
+
+// The private witness represents the user's secret eligibility string/seed.
+witness secretEligibilityHash(): Bytes<32>;
+
+// Struct to securely hash the Topic ID and Private Witness together
+export struct SignalToken {
+    topicId: Bytes<32>,
+    secret: Bytes<32>
+}
+
+// The circuit now ONLY accepts the Topic ID. The token is derived internally.
+export circuit broadcastSignal(topicId: Bytes<32>): [] {
+    // 1. Verify eligibility
+    const secretHash = secretEligibilityHash();
+    
+    // We explicitly disclose the topicId to the public ledger
+    const revealedTopicId = disclose(topicId);
+    
+    // 2. Cryptographically derive the token INSIDE the circuit
+    const input = SignalToken { topicId: topicId, secret: secretHash };
+    const derivedToken = persistentHash<SignalToken>(input);
+    const revealedToken = disclose(derivedToken);
+    
+    // 2. Prevent duplicate signals for this specific topic
+    assert(!signalTokens.member(revealedToken), "You have already broadcasted a signal to this topic or the token is invalid.");
+        
+    // 3. Update public state
+    signalTokens.insert(revealedToken);
+    
+    if (topics.member(revealedTopicId)) {
+        const currentCount = topics.lookup(revealedTopicId);
+        topics.insert(revealedTopicId, (currentCount + 1) as Uint<32>);
+    } else {
+        topics.insert(revealedTopicId, 1 as Uint<32>);
+    }
+}
