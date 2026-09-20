@@ -135,10 +135,19 @@ The `quietsignal.compact` smart contract was successfully deployed to the Midnig
 </details>
 
 ### 3. Verified ZK-Proof Submission on Preprod
-**Transaction Hash:** `[TO BE PROVIDED BY USER]`
+**Transaction Hash:** [`0x72c31715b5e88de177eb593aa0a37d474739f54b7cf1e5c9a11585b96e022392`](https://preprod.midnightexplorer.com/transactions/0x72c31715b5e88de177eb593aa0a37d474739f54b7cf1e5c9a11585b96e022392)
 
 *What happened on-chain?* 
 The transaction successfully invoked the `broadcastSignal` circuit. The Midnight network verified the Zero-Knowledge proof generated locally on the client. It securely updated the `topics` tally increment and permanently added the user's secret hash to the `signalTokens` set, thereby preventing replay attacks or double-signaling without exposing the wallet's identity.
+
+<details open>
+<summary><b>View Successful ZK-Proof Transaction</b></summary>
+<br>
+
+<div align="center">
+  <img src="./frontend/src/img/sucessfull-txn.png" alt="Successful Transaction on Midnight Explorer" width="800" style="border-radius: 8px; margin: 15px 0;" />
+</div>
+</details>
 
 ---
 
