@@ -89,16 +89,17 @@ function discoverWallet(walletId?: string): InitialAPI | null {
   // Discover by iterating over CAIP-372 UUIDs and generic keys
   for (const key of keys) {
     const provider = window.midnight[key];
+    
+    if (provider && typeof provider.connect !== 'function' && typeof (provider as any).enable === 'function') {
+      provider.connect = (provider as any).enable;
+    }
+
     if (provider && typeof provider.connect === 'function') {
       const is1AM = key === '1am' || provider.name?.toLowerCase().includes('1am');
       const isLace = key === 'lace' || provider.name?.toLowerCase().includes('lace');
 
       if (walletId === 'lace' && is1AM) continue;
       if (walletId === '1am' && isLace) continue;
-
-      if (typeof provider.connect !== 'function' && typeof (provider as any).enable === 'function') {
-        provider.connect = (provider as any).enable;
-      }
       
       console.log(`[QUIETSIGNAL] Found wallet provider under key "${key}":`, {
         name: provider.name,
@@ -226,10 +227,16 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
       let connectedNetwork = '';
       const tryConnect = async () => {
         const networksToTry = ['preprod', 'testnet'];
+        const withTimeout = (promise: Promise<any>, ms: number, opName: string) => 
+          Promise.race([
+            promise,
+            new Promise((_, reject) => setTimeout(() => reject(new Error(`${opName} timed out after ${ms}ms. Check for hidden popups.`)), ms))
+          ]);
+
         for (const net of networksToTry) {
           try {
             console.log(`[QUIETSIGNAL] Attempting connect with network: ${net}`);
-            api = await wallet.connect(net);
+            api = await withTimeout(wallet.connect(net), 8000, 'wallet.connect(net)');
             connectedNetwork = net;
             console.log(`[QUIETSIGNAL] ✓ Connected on network: ${net}`);
             return true;
@@ -242,7 +249,7 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
         try {
           console.log(`[QUIETSIGNAL] Attempting connect without network argument (fallback)`);
           // @ts-ignore
-          api = await wallet.connect();
+          api = await withTimeout(wallet.connect(), 8000, 'wallet.connect()');
           connectedNetwork = 'preprod';
           console.log(`[QUIETSIGNAL] ✓ Connected without arguments`);
           return true;
@@ -294,10 +301,16 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
           // Configure global network ID for the Midnight SDK
           setNetworkId(connectedNetwork);
 
-          const config = await api.getConfiguration();
+          const withTimeout = (promise: Promise<any>, ms: number, opName: string) => 
+            Promise.race([
+              promise,
+              new Promise((_, reject) => setTimeout(() => reject(new Error(`${opName} timed out after ${ms}ms.`)), ms))
+            ]);
+
+          const config = await withTimeout(api.getConfiguration(), 5000, 'api.getConfiguration()');
           const zkConfig = new fetchZkConfigProvider(window.location.origin + '/managed/quietsignal/', window.fetch.bind(window));
           
-          const shieldedAddresses = await api.getShieldedAddresses();
+          const shieldedAddresses = await withTimeout(api.getShieldedAddresses(), 5000, 'api.getShieldedAddresses()');
           
           const walletProvider = {
             getCoinPublicKey: () => shieldedAddresses.shieldedCoinPublicKey,
@@ -335,7 +348,7 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
           const basePublicDataProvider = indexerPublicDataProvider(config.indexerUri, config.indexerWsUri);
           const providers: any = {
             privateStateProvider: levelPrivateStateProvider({
-              privateStateStoreName: 'survey-state-v2',
+              privateStateStoreName: 'quietsignal-state-v1',
               accountId: accountId,
               privateStoragePasswordProvider: () => 'Local-Devnet-Development-Placeholder-1'
             }),
@@ -375,7 +388,7 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
             secretBytes[i] = parseInt(userSecretHex.slice(i * 2, i * 2 + 2), 16);
           }
 
-          const compiled = CompiledContract.make('survey', Contract).pipe(
+          const compiled = CompiledContract.make('quietsignal', Contract).pipe(
             CompiledContract.withWitnesses({ 
               secretEligibilityHash: (context: any) => [context.privateState, secretBytes] 
             }),
@@ -502,7 +515,7 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
         const contract = await findDeployedContract(providers, {
           contractAddress: contractAddressRef.current,
           compiledContract: compiled,
-          privateStateId: 'survey-state-v2',
+          privateStateId: 'quietsignal-state-v1',
           initialPrivateState: {},
         });
 
