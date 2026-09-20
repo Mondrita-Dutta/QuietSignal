@@ -6,7 +6,7 @@
     <strong>A Decentralized, ZK-Verified Private Signaling Protocol built on the Midnight Blockchain.</strong>
   </p>
   
-  [![CI/CD Status]([TO BE PROVIDED BY USER])]([TO BE PROVIDED BY USER])
+  [![CI/CD Status](https://github.com/Mondrita-Dutta/QuietSignal/actions/workflows/ci.yml/badge.svg)](https://github.com/Mondrita-Dutta/QuietSignal/actions)
   [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![Midnight Blockchain](https://img.shields.io/badge/Network-Midnight_Preprod-558763.svg)](https://midnight.network/)
   [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
@@ -20,7 +20,7 @@
 ## ✧ SUBMISSION DETAILS & QUICK LINKS
 
 *   **⎈ Network**: Midnight Preprod Testnet
-*   **▤ GitHub Repository**: [[TO BE PROVIDED BY USER]]
+*   **▤ GitHub Repository**: [https://github.com/Mondrita-Dutta/QuietSignal](https://github.com/Mondrita-Dutta/QuietSignal)
 *   **⌁ Live Demo**: [[TO BE PROVIDED BY USER]]
 *   **▷ Demo Video**: [[TO BE PROVIDED BY USER]]
 *   **🐦 Product X Profile**: [[TO BE PROVIDED BY USER]]
@@ -60,8 +60,8 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **Minimum 5 Meaningful Commits** | ✓ **Verified** | Over 60 semantic commits exist, demonstrating iterative development. |
 | **Public GitHub Repository** | ✓ **Verified** | The repository is completely public with a comprehensive `README.md`. |
 | **Setup Instructions (Local)** | ✓ **Verified** | Complete and accurate Docker and Node.js setup instructions are provided at the bottom of this document. |
-| **Screenshot: Compile Output** | ✓ **Verified** | ![Compile Output](./frontend/src/img/compile_output.png) |
-| **Screenshot: Contract Deployed** | ✓ **Verified** | ![Contract Deployed](./frontend/src/img/deployed-contract.png) |
+| **Screenshot: Compile Output** | ✓ **Verified** | Provided in the "Checkpoint Deliverables" section below. |
+| **Screenshot: Contract Deployed** | ✓ **Verified** | Provided in the "Checkpoint Deliverables" section below. |
 | **Privacy Explanation (State vs Witness)**| ✓ **Verified** | Exhaustive breakdown provided in the "Privacy Model" section above. |
 
 ### ◐ Level 2 Submission Requirements
@@ -86,8 +86,8 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **CI/CD Pipeline Running** | ✓ **Verified** | Configured `.github/workflows/ci.yml` running `npm run compile` and `npm test` automatically. |
 | **Approved Idea Submitted** | ✓ **Verified** | The project strictly aligns with the "Anonymous Signal / Survey" hackathon category. |
 | **Minimum 10 Meaningful Commits**| ✓ **Verified** | Repository history perfectly aligns with the requirement. |
-| **Screenshot: Test Output** | ✓ **Verified** | ![Test Output](./frontend/src/img/3+test_output.png) |
-| **CI/CD Badge & Passing Runs** | ✓ **Verified** | ![CI/CD Pipeline](./frontend/src/img/ci-cd-pipeline.png) |
+| **Screenshot: Test Output** | ✓ **Verified** | Provided in the "Passing Suite" deliverables section below. |
+| **CI/CD Badge & Passing Runs** | ✓ **Verified** | Provided in the "Unified CI/CD Pipeline" deliverables section below. |
 | **Demo Video (Full Functionality)**| ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
 | **Privacy Model "Observer"** | ✓ **Verified** | Detailed in the Privacy Model section, explicitly stating what a passive observer can and cannot learn. |
 
@@ -111,18 +111,25 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 ### 1. Compile Output & ZK Circuit Generation
 The smart contract was compiled using `@midnight-ntwrk/compact-compiler v0.31.1`.
 **Command executed:** `npx compactc quietsignal.compact -o managed/quietsignal`
-
-<div align="center">
-  <img src="./frontend/src/img/compile_output.png" alt="Contract Compilation Output showing 4583 rows" width="800" style="border-radius: 8px; margin: 15px 0;" />
-</div>
-
 **Result:** Successfully generated the BZKIR bytecodes, prover keys (`.pk`), and verifier keys (`.vk`) for the `broadcastSignal` circuit. The compiler calculated exactly **4583 rows (k=13)** for the ZK execution trace. These files reside in the `backend/contracts/managed` directory and are natively bundled into the frontend via the `sync-zk.mjs` script during build.
+<details open>
+<summary><b>View Compile Output</b></summary>
+<br>
+
+![Compile Output](./frontend/src/img/compile_output.png)
+</details>
 
 ### 2. Verified ZK-Proof Submission on Preprod
 **Transaction Hash:** `[TO BE PROVIDED BY USER]`
 
 *What happened on-chain?* 
 The transaction successfully invoked the `broadcastSignal` circuit. The Midnight network verified the Zero-Knowledge proof generated locally on the client. It securely updated the `topics` tally increment and permanently added the user's secret hash to the `signalTokens` set, thereby preventing replay attacks or double-signaling without exposing the wallet's identity.
+<details open>
+<summary><b>View Successful Transaction</b></summary>
+<br>
+
+![Successful Transaction](./frontend/src/img/deployed-contract.png)
+</details>
 
 ---
 
@@ -143,16 +150,19 @@ To ensure flawless compatibility with the Lace Wallet, we implemented a dynamic 
 
 The project utilizes the `@midnight-ntwrk/compact-runtime` to natively execute the contract Abstract Syntax Tree (AST) within the Node.js test environment.
 
-<div align="center">
-  <img src="./frontend/src/img/3+test_output.png" alt="Test Execution Output" width="800" style="border-radius: 8px; margin: 15px 0;" />
-</div>
-
 **File:** [`backend/tests/quietsignal.test.ts`](./backend/tests/quietsignal.test.ts)
 
 **Validated Invariants:**
 1. **Successful State Transition:** Verifies that `contract.circuits.broadcastSignal` successfully executes against a mock ledger state and generates valid `proofData` when supplied with valid parameters.
 2. **Strict Cryptographic Boundaries (Negative Test):** Submits an invalid Topic ID array, verifying that `assert.throws` accurately catches the cryptographic error, proving the circuit's type safety.
 3. **Private State Initialization:** Validates that `createConstructorContext` correctly initializes the private ledger schema without data leaks.
+
+<details open>
+<summary><b>View Test Output</b></summary>
+<br>
+
+![Test Output](./frontend/src/img/3+test_output.png)
+</details>
 
 ---
 
@@ -162,13 +172,16 @@ The project utilizes the `@midnight-ntwrk/compact-runtime` to natively execute t
 
 Our continuous integration pipeline automatically validates every push to the repository to ensure cryptographic stability.
 
-<div align="center">
-  <img src="./frontend/src/img/ci-cd-pipeline.png" alt="GitHub Actions CI/CD Pipeline passing" width="800" style="border-radius: 8px; margin: 15px 0;" />
-</div>
-
 - **Build Step:** Installs all Next.js and Midnight SDK dependencies.
 - **Circuit Compilation:** Downloads and executes `compact-installer.sh`, executing the Compact Compiler natively on the Ubuntu runner to ensure `quietsignal.compact` successfully compiles into ZK parameters.
 - **AST Execution:** Executes `npm test`, running the `node:test` suite against the freshly compiled bytecodes to guarantee no regressions in the contract logic.
+
+<details open>
+<summary><b>View CI/CD Pipeline</b></summary>
+<br>
+
+![CI/CD Pipeline](./frontend/src/img/ci-cd-pipeline.png)
+</details>
 
 ---
 
@@ -197,3 +210,99 @@ npm install
 npm run build
 npm run dev
 ```
+Visit `http://localhost:3000` in your browser.
+
+---
+
+## ✧ PRIVACY MODEL: WHAT AN OBSERVER CAN AND CANNOT LEARN
+
+QuietSignal strictly adheres to Midnight's Selective Disclosure architecture.
+
+### ◉ PUBLIC STATE (What an Observer CAN Learn)
+- **Topic Exists:** An observer can read the `topics` mapping on the ledger to see the 32-byte Topic ID and the public tally of total signals broadcast.
+- **Signal Token Set:** An observer can see a list of random 32-byte hashes added to the `signalTokens` set, indicating that *someone* has signaled.
+
+### ◉ PRIVATE WITNESS (What an Observer CANNOT Learn)
+- **Participant Identity:** The identity is protected by a dynamically generated, cryptographically secure 32-byte random seed (`crypto.getRandomValues()`) stored strictly in the user's browser `localStorage`. This seed acts as a persistent private witness to generate the ZK nullifier. The Wallet Address is NEVER exposed on-chain.
+- **Double-Signaling Attempts:** Observers only see that an anonymous transaction was mathematically rejected by the smart contract due to a zero-knowledge signal token collision. They cannot determine *who* attempted the double-signal.
+
+---
+
+## ✧ HIGH-LEVEL SYSTEM ARCHITECTURE
+
+```mermaid
+sequenceDiagram
+    participant I as Issuer
+    participant DB as JSON Data Store
+    participant N as Midnight Preprod
+    participant P as Participant Browser
+    
+    I->>DB: Create Topic
+    I->>N: Deploy/Register on Ledger
+    P->>DB: Fetch Topic
+    P->>P: Generate 32-byte Secret Witness
+    P->>P: Compute ZK-SNARK locally in Extension
+    
+    P->>N: Broadcast ZK Proof & Signal Token
+    N->>N: Verify Proof, Reject if Signal Token exists
+```
+
+---
+
+## ✧ TECHNOLOGY STACK
+*   **Smart Contracts**: Midnight Compact Compiler (`v0.31.1`)
+*   **Client Architecture**: Next.js 14 (App Router), TypeScript, Tailwind CSS
+*   **Wallet Integration**: `@midnight-ntwrk/midnight-js-protocol`, DApp Connector (`window.midnight.mnLace` & `mn1am`)
+*   **Database Persistence**: Vercel Blob / Local FS Storage (via `api/db.ts`)
+*   **Testing**: Node.js Native Test Runner (`node:test`) & `@midnight-ntwrk/compact-runtime`
+
+---
+
+## ✧ PROJECT STRUCTURE
+
+```text
+QuietSignal/
+├── backend/
+│   ├── contracts/         # Midnight Compact smart contract source code
+│   │   ├── managed/       # Generated ZK circuits, proving keys, and verification keys
+│   │   └── quietsignal.compact # Core selective disclosure logic
+│   ├── src/               # Deployment and wallet syncing scripts
+│   └── tests/             # Automated test suite validating ZK constraints
+├── frontend/
+│   ├── src/app/           # Next.js App Router (Dashboard, Topic View)
+│   ├── src/providers/     # Midnight Wallet SDK integration context
+│   └── package.json       # Frontend dependencies and Next.js config
+├── docs/
+│   ├── PROPOSAL.md        # Product proposal 
+│   └── USAGE.md           # User-facing guide 
+├── PROPOSAL.md            # Root-level proposal reference
+└── .github/workflows/     # GitHub Actions CI/CD pipelines (ci.yml)
+```
+
+---
+
+## ✧ USAGE GUIDE
+
+For a complete, step-by-step guide on how to use QuietSignal — including creating topics, submitting shielded signals, and understanding the privacy guarantees — see:
+
+**📖 [`docs/USAGE.md`](./docs/USAGE.md)**
+
+---
+
+## ✧ PRODUCT PROPOSAL
+
+QuietSignal's detailed product proposal — covering target users, Midnight justification, data model, and mainnet feasibility — is available at:
+
+**📋 [`docs/PROPOSAL.md`](./docs/PROPOSAL.md)**
+
+---
+
+## ✧ PRODUCT X PROFILE
+
+**🐦 [Follow QuietSignal on X]([TO BE PROVIDED BY USER])**
+
+---
+
+<div align="center">
+  <sub>Built with ♡ for the Midnight Ecosystem</sub>
+</div>
