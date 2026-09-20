@@ -120,101 +120,51 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
-
-      {/* Hyperrealistic Cotton Cross-Stitch Divider */}
-      <div className="w-full relative z-20">
-        <div className="absolute left-0 right-0 top-[-10px] h-[20px] w-full pointer-events-none opacity-80">
+      {/* Feature Section */}
+      <div className="w-full bg-[var(--color-cotton-lavender)] py-24 felt-texture relative border-t border-slate-900/5">
+        {/* Ultra-Polished Whip Stitch exactly on the Junction */}
+        <div className="absolute left-0 right-0 top-[-12px] h-[24px] w-full z-20 pointer-events-none drop-shadow-sm opacity-90">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <filter id="thread-shadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="1.5" stdDeviation="1" floodColor="#000000" floodOpacity="0.4" />
-                <feDropShadow dx="0" dy="0.5" stdDeviation="0.2" floodColor="#000000" floodOpacity="0.5" />
+              <filter id="whip-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="2" stdDeviation="1.5" floodColor="#0f172a" floodOpacity="0.3" />
+                <feDropShadow dx="-0.5" dy="-0.5" stdDeviation="0.5" floodColor="#ffffff" floodOpacity="0.7" />
               </filter>
-              <g id="intact-stitch">
-                {/* Puncture Holes (Deep Shadow) */}
-                <circle cx="10" cy="4" r="2.2" fill="#000000" opacity="0.35" />
-                <circle cx="22" cy="4" r="2.2" fill="#000000" opacity="0.35" />
-                <circle cx="10" cy="16" r="2.2" fill="#000000" opacity="0.35" />
-                <circle cx="22" cy="16" r="2.2" fill="#000000" opacity="0.35" />
+              
+              <pattern id="ultra-whip-stitch" x="0" y="0" width="48" height="24" patternUnits="userSpaceOnUse">
+                {/* Puncture holes (deep inner shadow) */}
+                <circle cx="12" cy="4" r="2.5" fill="#000000" opacity="0.35" />
+                <circle cx="36" cy="20" r="2.5" fill="#000000" opacity="0.35" />
                 
-                {/* Puncture Hole Rim Highlights (Fabric stretching) */}
-                <path d="M8.5,5.5 A 2.2 2.2 0 0 0 11.5,5.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
-                <path d="M20.5,5.5 A 2.2 2.2 0 0 0 23.5,5.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
-                <path d="M8.5,17.5 A 2.2 2.2 0 0 0 11.5,17.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
-                <path d="M20.5,17.5 A 2.2 2.2 0 0 0 23.5,17.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
+                {/* Puncture hole inner highlight (where fabric folds in) */}
+                <path d="M 12,1.5 A 2.5,2.5 0 0,1 14.5,4" fill="none" stroke="#ffffff" strokeWidth="1" opacity="0.8" />
+                <path d="M 36,22.5 A 2.5,2.5 0 0,0 33.5,20" fill="none" stroke="#ffffff" strokeWidth="1" opacity="0.8" />
 
-                <g filter="url(#thread-shadow)">
-                  {/* Under Thread (Twisted Fiber Base) */}
-                  <path d="M22,4 L10,16" fill="none" stroke="#475569" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M22,4 L10,16" fill="none" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="0 3.5" opacity="0.5" />
-                  <path d="M22,4 L10,16" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="0 3.5" strokeDashoffset="1.75" opacity="0.9" />
+                {/* Fabric tension (subtle creases pulling away from holes) */}
+                <path d="M 7,4 Q 12,0 17,4" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" />
+                <path d="M 31,20 Q 36,24 41,20" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.4" />
 
-                  {/* Over Thread (Twisted Fiber Base) */}
-                  <path d="M10,4 L22,16" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M10,4 L22,16" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="0 3.5" opacity="0.5" />
-                  <path d="M10,4 L22,16" fill="none" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="0 3.5" strokeDashoffset="1.75" opacity="0.9" />
+                {/* The thread - multiple layered paths to create a 3D braided look */}
+                <g filter="url(#whip-shadow)">
+                  {/* Base thread (thick) */}
+                  <path d="M 12,4 L 36,20" fill="none" stroke="#f1f5f9" strokeWidth="4.5" strokeLinecap="round" />
+                  
+                  {/* Thread twist texture (diagonal dashes) */}
+                  <path d="M 12,4 L 36,20" fill="none" stroke="#cbd5e1" strokeWidth="4.5" strokeLinecap="round" strokeDasharray="0 4.5" opacity="0.85" />
+                  
+                  {/* Inner core shadow */}
+                  <path d="M 12,4.5 L 36,20.5" fill="none" stroke="#000000" strokeWidth="1" strokeLinecap="round" opacity="0.15" />
+
+                  {/* Top highlight (makes it look round and shiny) */}
+                  <path d="M 12,3.5 L 36,19.5" fill="none" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" opacity="0.95" />
                 </g>
-              </g>
-
-              {/* Pattern spanning 12 stitches (384px) to make the tear appear sparsely and minimalistically */}
-              <pattern id="hyper-cross-stitch" x="0" y="0" width="384" height="20" patternUnits="userSpaceOnUse">
-                <use href="#intact-stitch" x="0" />
-                <use href="#intact-stitch" x="32" />
-                <use href="#intact-stitch" x="64" />
-                <use href="#intact-stitch" x="96" />
-                <use href="#intact-stitch" x="128" />
-                <use href="#intact-stitch" x="160" />
-                <use href="#intact-stitch" x="192" />
-                <use href="#intact-stitch" x="224" />
-
-                {/* Broken/Torn Stitch at x=256 */}
-                <g transform="translate(256, 0)">
-                  <circle cx="10" cy="4" r="2.2" fill="#000000" opacity="0.35" />
-                  <circle cx="22" cy="4" r="2.2" fill="#000000" opacity="0.35" />
-                  <circle cx="10" cy="16" r="2.2" fill="#000000" opacity="0.35" />
-                  <circle cx="22" cy="16" r="2.2" fill="#000000" opacity="0.35" />
-                  <path d="M8.5,5.5 A 2.2 2.2 0 0 0 11.5,5.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
-                  <path d="M20.5,5.5 A 2.2 2.2 0 0 0 23.5,5.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
-                  <path d="M8.5,17.5 A 2.2 2.2 0 0 0 11.5,17.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
-                  <path d="M20.5,17.5 A 2.2 2.2 0 0 0 23.5,17.5" fill="none" stroke="#ffffff" strokeWidth="0.75" opacity="0.6" />
-
-                  <g filter="url(#thread-shadow)">
-                    {/* Under Thread is Intact */}
-                    <path d="M22,4 L10,16" fill="none" stroke="#475569" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M22,4 L10,16" fill="none" stroke="#1e293b" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="0 3.5" opacity="0.5" />
-                    <path d="M22,4 L10,16" fill="none" stroke="#94a3b8" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="0 3.5" strokeDashoffset="1.75" opacity="0.9" />
-
-                    {/* Over Thread is SNAPPED and frayed outwards */}
-                    {/* Left torn piece curling down */}
-                    <path d="M10,4 Q11,8 8,11" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M10,4 Q11,8 8,11" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="0 3.5" opacity="0.5" />
-                    <path d="M10,4 Q11,8 8,11" fill="none" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="0 3.5" strokeDashoffset="1.75" opacity="0.9" />
-
-                    {/* Right torn piece curling up */}
-                    <path d="M22,16 Q19,13 24,10" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M22,16 Q19,13 24,10" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="0 3.5" opacity="0.5" />
-                    <path d="M22,16 Q19,13 24,10" fill="none" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="0 3.5" strokeDashoffset="1.75" opacity="0.9" />
-                    
-                    {/* Frayed micro-fibers sticking out of the tear */}
-                    <path d="M8,11 Q7,12 6,10.5" fill="none" stroke="#cbd5e1" strokeWidth="0.5" strokeLinecap="round" opacity="0.8" />
-                    <path d="M8,11 Q9,13 10.5,12" fill="none" stroke="#94a3b8" strokeWidth="0.5" strokeLinecap="round" opacity="0.6" />
-                    <path d="M24,10 Q25,8 26.5,9.5" fill="none" stroke="#cbd5e1" strokeWidth="0.5" strokeLinecap="round" opacity="0.8" />
-                  </g>
-                </g>
-
-                <use href="#intact-stitch" x="288" />
-                <use href="#intact-stitch" x="320" />
-                <use href="#intact-stitch" x="352" />
               </pattern>
             </defs>
-            <rect width="100%" height="100%" fill="url(#hyper-cross-stitch)" />
+            <rect width="100%" height="100%" fill="url(#ultra-whip-stitch)" />
           </svg>
         </div>
-      </div>
 
-      {/* Feature Section */}
-      <div className="w-full bg-[var(--color-cotton-lavender)] py-24 felt-texture">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 relative z-10">
           <div className="text-center mb-16">
             <h2 className="font-headline-lg text-slate-900 drop-shadow-sm font-bold">Institutional Grade Infrastructure</h2>
             <p className="font-body-md text-slate-700 mt-2 font-medium">Privacy shouldn't come at the cost of trust.</p>
