@@ -145,30 +145,50 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
   const [connectionStatus, setConnectionStatus] = useState<'idle' | 'connecting' | 'success'>('idle');
   const [proofServerStatus, setProofServerStatus] = useState<'waking' | 'ready' | 'error' | 'idle'>('idle');
 
-  // Intelligent Render Server Wake-up Probe
+  // Intelligent Render Server Wake-up Probe with Polling
   useEffect(() => {
     const proofServerUrl = process.env.NEXT_PUBLIC_PROOF_SERVER_URL;
     if (!proofServerUrl) return;
 
+    let isMounted = true;
+    let retryCount = 0;
+    const maxRetries = 30; // ~60 seconds of polling for Render cold start
+
     const wakeServer = async () => {
+      if (!isMounted) return;
       setProofServerStatus('waking');
+      
       try {
-        // Perform a real health check against the proof server.
-        // It will fail if the server is offline or the domain doesn't exist.
-        const res = await fetch(proofServerUrl, { method: 'GET' });
+        const res = await fetch(proofServerUrl, { 
+          method: 'GET',
+          // Use a short timeout so we can retry quickly rather than hanging on a dead socket
+          signal: AbortSignal.timeout(4000) 
+        });
+        
         if (res.ok) {
-          setProofServerStatus('ready');
+          if (isMounted) setProofServerStatus('ready');
         } else {
-          console.warn(`Proof server returned status ${res.status}`);
-          setProofServerStatus('error');
+          throw new Error(`Status ${res.status}`);
         }
       } catch (e) {
-        console.error('Proof server probe failed:', e);
-        setProofServerStatus('error');
+        if (!isMounted) return;
+        
+        retryCount++;
+        if (retryCount < maxRetries) {
+          // Poll again in 2 seconds
+          setTimeout(wakeServer, 2000);
+        } else {
+          console.error('Proof server probe failed after retries:', e);
+          setProofServerStatus('error');
+        }
       }
     };
     
     wakeServer();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {
