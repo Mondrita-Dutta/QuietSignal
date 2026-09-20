@@ -151,16 +151,14 @@ The transaction successfully invoked the `broadcastSignal` circuit. The Midnight
 
 ---
 
-## ✧ LACE WALLET INTEGRATION & HTTP PROOF SERVER WORKAROUND
+## ✧ LACE WALLET INTEGRATION & REMOTE PROVING
 
-### The Challenge
-During development, we discovered a significant integration disparity: The **1A.M. Wallet** natively supports an in-browser proving provider (`api.getProvingProvider(zkConfig)`), which computes ZK-SNARKs directly inside the browser extension. However, the **Lace Wallet** currently lacks this capability and throws a `TypeError` if invoked natively for client-side proving.
+**The Challenge:** Unlike the 1A.M. Wallet, the **Lace Wallet** currently lacks native in-browser ZK-SNARK generation.
 
-### The Technical Solution
-To ensure flawless compatibility with the Lace Wallet, we implemented a dynamic fallback architecture in [`MidnightProvider.tsx`](./frontend/src/providers/MidnightProvider.tsx):
-1. **Wallet Detection:** The application sniffs the DApp connector identity (`walletId === 'lace'`).
-2. **Proof Server Fallback:** If Lace is detected, we bypass the native API and instantiate the `@midnight-ntwrk/midnight-js-testing` package's `httpClientProofProvider`.
-3. **Remote Proving Engine:** We configured a remote Proof Server instance. The frontend seamlessly serializes the unproven transaction, sends an HTTP POST request to the remote server to synthesize the ZK-SNARK, and successfully submits the returned proof.
+**The Solution:** We implemented a dynamic fallback in [`MidnightProvider.tsx`](./frontend/src/providers/MidnightProvider.tsx):
+1. **Auto-Detection:** Identifies the active wallet provider (`walletId === 'lace'`).
+2. **Remote Proof Server:** If Lace is detected, the app seamlessly routes the unproven transaction to a remote server using `httpClientProofProvider`.
+3. **Execution:** The server generates the ZK-SNARK and returns it to the client for successful on-chain submission, ensuring 100% compatibility.
 
 ---
 
