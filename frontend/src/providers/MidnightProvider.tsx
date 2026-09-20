@@ -236,7 +236,7 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
         for (const net of networksToTry) {
           try {
             console.log(`[QUIETSIGNAL] Attempting connect with network: ${net}`);
-            api = await withTimeout(wallet.connect(net), 8000, 'wallet.connect(net)');
+            api = await withTimeout(wallet.connect(net), 60000, 'wallet.connect(net)');
             connectedNetwork = net;
             console.log(`[QUIETSIGNAL] ✓ Connected on network: ${net}`);
             return true;
@@ -249,7 +249,7 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
         try {
           console.log(`[QUIETSIGNAL] Attempting connect without network argument (fallback)`);
           // @ts-ignore
-          api = await withTimeout(wallet.connect(), 8000, 'wallet.connect()');
+          api = await withTimeout(wallet.connect(), 60000, 'wallet.connect()');
           connectedNetwork = 'preprod';
           console.log(`[QUIETSIGNAL] ✓ Connected without arguments`);
           return true;
