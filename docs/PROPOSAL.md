@@ -28,7 +28,7 @@ Traditional platforms force users to trust the centralized server operator not t
 
 ## 6. Submission Deliverables
 - [x] Deployed Smart Contract Address: `0x2cbe0f07410cee0dbab1dba091aa8484cf04a633c274a9f22e64292592fda422`
-- [x] Live Vercel Demo: `[TO BE PROVIDED BY USER]`
+- [x] Live Vercel Demo: [https://quiet-signal-bice.vercel.app/](https://quiet-signal-bice.vercel.app/)
 - [x] Product X Profile: `[TO BE PROVIDED BY USER]`
 - [x] Open Source GitHub Repo
 - [x] Demo Video
