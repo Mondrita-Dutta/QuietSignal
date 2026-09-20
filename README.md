@@ -119,17 +119,26 @@ The smart contract was compiled using `@midnight-ntwrk/compact-compiler v0.31.1`
 ![Compile Output](./frontend/src/img/compile_output.png)
 </details>
 
-### 2. Verified ZK-Proof Submission on Preprod
+### 2. Verified Contract Deployment on Preprod
+**Contract Address:** [`0x2cbe0f07410cee0dbab1dba091aa8484cf04a633c274a9f22e64292592fda422`](https://preprod.midnightexplorer.com/contracts/0x2cbe0f07410cee0dbab1dba091aa8484cf04a633c274a9f22e64292592fda422)
+
+*What happened on-chain?*
+The `quietsignal.compact` smart contract was successfully deployed to the Midnight Preprod network. This immutable ledger will securely tally topic signals while enforcing the cryptographic integrity of the Zero-Knowledge proofs.
+
+<details open>
+<summary><b>View Deployed Contract</b></summary>
+<br>
+
+<div align="center">
+  <img src="./frontend/src/img/deployed-contract.png" alt="Contract Deployed on Midnight Explorer" width="800" style="border-radius: 8px; margin: 15px 0;" />
+</div>
+</details>
+
+### 3. Verified ZK-Proof Submission on Preprod
 **Transaction Hash:** `[TO BE PROVIDED BY USER]`
 
 *What happened on-chain?* 
 The transaction successfully invoked the `broadcastSignal` circuit. The Midnight network verified the Zero-Knowledge proof generated locally on the client. It securely updated the `topics` tally increment and permanently added the user's secret hash to the `signalTokens` set, thereby preventing replay attacks or double-signaling without exposing the wallet's identity.
-<details open>
-<summary><b>View Successful Transaction</b></summary>
-<br>
-
-![Successful Transaction](./frontend/src/img/deployed-contract.png)
-</details>
 
 ---
 
