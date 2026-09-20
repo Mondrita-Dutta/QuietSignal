@@ -60,8 +60,8 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **Minimum 5 Meaningful Commits** | ✓ **Verified** | Over 60 semantic commits exist, demonstrating iterative development. |
 | **Public GitHub Repository** | ✓ **Verified** | The repository is completely public with a comprehensive `README.md`. |
 | **Setup Instructions (Local)** | ✓ **Verified** | Complete and accurate Docker and Node.js setup instructions are provided at the bottom of this document. |
-| **Screenshot: Compile Output** | ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
-| **Screenshot: Contract Deployed** | ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
+| **Screenshot: Compile Output** | ✓ **Verified** | ![Compile Output](./frontend/src/img/compile_output.png) |
+| **Screenshot: Contract Deployed** | ✓ **Verified** | ![Contract Deployed](./frontend/src/img/deployed-contract.png) |
 | **Privacy Explanation (State vs Witness)**| ✓ **Verified** | Exhaustive breakdown provided in the "Privacy Model" section above. |
 
 ### ◐ Level 2 Submission Requirements
@@ -86,8 +86,8 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **CI/CD Pipeline Running** | ✓ **Verified** | Configured `.github/workflows/ci.yml` running `npm run compile` and `npm test` automatically. |
 | **Approved Idea Submitted** | ✓ **Verified** | The project strictly aligns with the "Anonymous Signal / Survey" hackathon category. |
 | **Minimum 10 Meaningful Commits**| ✓ **Verified** | Repository history perfectly aligns with the requirement. |
-| **Screenshot: Test Output** | ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
-| **CI/CD Badge & Passing Runs** | ✓ **Pending** | Dynamic CI/CD Badge pending remote CI run. |
+| **Screenshot: Test Output** | ✓ **Verified** | ![Test Output](./frontend/src/img/3+test_output.png) |
+| **CI/CD Badge & Passing Runs** | ✓ **Verified** | ![CI/CD Pipeline](./frontend/src/img/ci-cd-pipeline.png) |
 | **Demo Video (Full Functionality)**| ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
 | **Privacy Model "Observer"** | ✓ **Verified** | Detailed in the Privacy Model section, explicitly stating what a passive observer can and cannot learn. |
 
@@ -111,7 +111,12 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 ### 1. Compile Output & ZK Circuit Generation
 The smart contract was compiled using `@midnight-ntwrk/compact-compiler v0.31.1`.
 **Command executed:** `npx compactc quietsignal.compact -o managed/quietsignal`
-**Result:** Successfully generated the BZKIR bytecodes, prover keys (`.pk`), and verifier keys (`.vk`) for the `broadcastSignal` circuit. These files reside in the `backend/contracts/managed` directory and are natively bundled into the frontend via the `sync-zk.mjs` script during build.
+
+<div align="center">
+  <img src="./frontend/src/img/compile_output.png" alt="Contract Compilation Output showing 4583 rows" width="800" style="border-radius: 8px; margin: 15px 0;" />
+</div>
+
+**Result:** Successfully generated the BZKIR bytecodes, prover keys (`.pk`), and verifier keys (`.vk`) for the `broadcastSignal` circuit. The compiler calculated exactly **4583 rows (k=13)** for the ZK execution trace. These files reside in the `backend/contracts/managed` directory and are natively bundled into the frontend via the `sync-zk.mjs` script during build.
 
 ### 2. Verified ZK-Proof Submission on Preprod
 **Transaction Hash:** `[TO BE PROVIDED BY USER]`
@@ -138,6 +143,10 @@ To ensure flawless compatibility with the Lace Wallet, we implemented a dynamic 
 
 The project utilizes the `@midnight-ntwrk/compact-runtime` to natively execute the contract Abstract Syntax Tree (AST) within the Node.js test environment.
 
+<div align="center">
+  <img src="./frontend/src/img/3+test_output.png" alt="Test Execution Output" width="800" style="border-radius: 8px; margin: 15px 0;" />
+</div>
+
 **File:** [`backend/tests/quietsignal.test.ts`](./backend/tests/quietsignal.test.ts)
 
 **Validated Invariants:**
@@ -151,7 +160,12 @@ The project utilizes the `@midnight-ntwrk/compact-runtime` to natively execute t
 
 **File:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
-Our continuous integration pipeline automatically validates every push to the repository to ensure cryptographic stability:
+Our continuous integration pipeline automatically validates every push to the repository to ensure cryptographic stability.
+
+<div align="center">
+  <img src="./frontend/src/img/ci-cd-pipeline.png" alt="GitHub Actions CI/CD Pipeline passing" width="800" style="border-radius: 8px; margin: 15px 0;" />
+</div>
+
 - **Build Step:** Installs all Next.js and Midnight SDK dependencies.
 - **Circuit Compilation:** Downloads and executes `compact-installer.sh`, executing the Compact Compiler natively on the Ubuntu runner to ensure `quietsignal.compact` successfully compiles into ZK parameters.
 - **AST Execution:** Executes `npm test`, running the `node:test` suite against the freshly compiled bytecodes to guarantee no regressions in the contract logic.
