@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./frontend/src/img/quietsignal-logo.jpg" alt="QuietSignal Logo" width="120" style="border-radius: 12px; margin-bottom: 20px;" />
-  <h1>✦ QuietSignal Protocol ✦</h1>
+  <h1>✦ QuietSignal ✦</h1>
   
   <p align="center">
     <strong>A Decentralized, ZK-Verified Private Signaling Protocol built on the Midnight Blockchain.</strong>
@@ -160,7 +160,7 @@ Our continuous integration pipeline automatically validates every push to the re
 
 ## ✧ SEAMLESS MOBILE UX
 
-QuietSignal Protocol is fully optimized for mobile devices. We implemented native responsive layouts, including touch-optimized hamburger menus for the main navigation and the dashboard sidebar, ensuring the entire dApp works perfectly on smartphones.
+QuietSignal is fully optimized for mobile devices. We implemented native responsive layouts, including touch-optimized hamburger menus for the main navigation and the dashboard sidebar, ensuring the entire dApp works perfectly on smartphones.
 
 ## ◈ RUN LOCALLY
 

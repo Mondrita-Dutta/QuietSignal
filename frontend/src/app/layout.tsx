@@ -33,7 +33,7 @@ export default function RootLayout({
               <div className="w-full px-[var(--spacing-container-padding)] py-8 max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   <Logo className="text-slate-800" />
-                  <span className="font-headline-md font-bold text-slate-900 drop-shadow-sm">QUIETSIGNAL Protocol</span>
+                  <span className="font-headline-md font-bold text-slate-900 drop-shadow-sm">QUIETSIGNAL</span>
                 </div>
                 <div className="font-body-md text-slate-700 flex items-center gap-4">
                   <span className="flex items-center gap-1.5 bg-white/50 px-3 py-1 rounded-full inset-puffy">

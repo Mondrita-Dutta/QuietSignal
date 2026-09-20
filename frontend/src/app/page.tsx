@@ -29,7 +29,7 @@ export default function Home() {
           <div className="w-full sm:w-auto flex justify-between items-center">
             <div className="flex items-center gap-2 text-slate-800">
               <Logo className="text-slate-800" />
-              <h1 className="font-headline-md font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 drop-shadow-md">QUIETSIGNAL Protocol</h1>
+              <h1 className="font-headline-md font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 drop-shadow-md">QUIETSIGNAL</h1>
             </div>
             
             <button 
