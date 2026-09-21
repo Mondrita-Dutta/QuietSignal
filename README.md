@@ -151,14 +151,16 @@ The transaction successfully invoked the `broadcastSignal` circuit. The Midnight
 
 ---
 
-## ✧ LACE WALLET INTEGRATION & REMOTE PROVING
+## ✧ LACE WALLET INTEGRATION & HTTP PROOF SERVER WORKAROUND
 
-**The Challenge:** Unlike the 1A.M. Wallet, the **Lace Wallet** currently lacks native in-browser ZK-SNARK generation.
+### The Challenge
+During development, we discovered a significant integration disparity: The **1A.M. Wallet** natively supports an in-browser proving provider (`api.getProvingProvider(zkConfig)`), which computes ZK-SNARKs directly inside the browser extension. However, the **Lace Wallet** currently lacks this capability and throws an error if invoked natively for client-side proving.
 
-**The Solution:** We implemented a dynamic fallback in [`MidnightProvider.tsx`](./frontend/src/providers/MidnightProvider.tsx):
-1. **Auto-Detection:** Identifies the active wallet provider (`walletId === 'lace'`).
-2. **Remote Proof Server:** If Lace is detected, the app seamlessly routes the unproven transaction to a remote server using `httpClientProofProvider`.
-3. **Execution:** The server generates the ZK-SNARK and returns it to the client for successful on-chain submission, ensuring 100% compatibility.
+### The Technical Solution
+To ensure flawless compatibility with the Lace Wallet, we implemented a dynamic fallback architecture in [`MidnightProvider.tsx`](./frontend/src/providers/MidnightProvider.tsx):
+1. **Wallet Detection:** The application sniffs the DApp connector identity (`walletId === 'lace'`).
+2. **Proof Server Fallback:** If Lace is detected, we bypass the native API and instantiate the `@midnight-ntwrk/midnight-js-testing` package's `httpClientProofProvider`.
+3. **Remote Proving Engine:** We deployed the official Midnight Proof Server (`midnightntwrk/proof-server:8.1.0`) on a remote Render instance. The frontend seamlessly serializes the unproven transaction, sends an HTTP POST request to the remote server to synthesize the ZK-SNARK, and successfully submits the returned proof.
 
 ---
 
@@ -205,25 +207,40 @@ Our continuous integration pipeline automatically validates every push to the re
 
 QuietSignal is fully optimized for mobile devices. We implemented native responsive layouts, including touch-optimized hamburger menus for the main navigation and the dashboard sidebar, ensuring the entire dApp works perfectly on smartphones.
 
-## ◈ RUN LOCALLY
+## ✧ SETUP & RUN LOCALLY
 
-### 1. Requirements
-- Node.js v22
-- Midnight Compact Compiler (`npm i -g @midnight-ntwrk/compact-compiler`)
-- Docker (for local Midnight Node)
+### Prerequisites
+1. **Node.js**: Ensure you have Node.js v22 installed.
+2. **Docker**: Ensure Docker Desktop is running (required for the Lace Proof Server).
+3. **Midnight Toolchain**: Ensure the `compact-compiler` is installed on your machine.
+4. **Wallet**: Install the **1A.M. Wallet** or **Lace** browser extension.
 
-### 2. Backend Setup
+### 1. Boot the Local Proof Server (Required for Lace)
+Navigate to the `backend` directory and spin up the Docker Proof Server infrastructure.
 ```bash
 cd backend
+docker compose up -d proof-server
+```
+*Note: This spins up `midnightntwrk/proof-server:8.1.0` on port 6300, matching the version required by the Midnight SDK. It avoids DNS/CORS issues natively without a Vercel proxy.*
+
+### 2. Compile the Smart Contract
+Build the ZK circuits and generate the prover/verifier keys in the `managed/` directory.
+```bash
 npm install
 npm run compile
 ```
 
-### 3. Frontend Setup
+### 3. Run the ZK Test Suite
+Validate the contract AST execution logic locally.
 ```bash
-cd frontend
+npm test
+```
+
+### 4. Launch the Next.js Frontend
+Navigate to the `frontend` directory. The `npm run dev` script will automatically execute `sync-zk.mjs` to copy the compiled ZK parameters into the Next.js public directory before booting the server.
+```bash
+cd ../frontend
 npm install
-npm run build
 npm run dev
 ```
 Visit `http://localhost:3000` in your browser.
@@ -252,12 +269,19 @@ sequenceDiagram
     participant DB as JSON Data Store
     participant N as Midnight Preprod
     participant P as Participant Browser
+    participant PS as Proof Server (Lace Only)
     
     I->>DB: Create Topic
     I->>N: Deploy/Register on Ledger
     P->>DB: Fetch Topic
     P->>P: Generate 32-byte Secret Witness
-    P->>P: Compute ZK-SNARK locally in Extension
+    
+    alt Using 1A.M. Wallet
+        P->>P: Compute ZK-SNARK locally in Extension
+    else Using Lace Wallet
+        P->>PS: Remote API request to synthesize ZK-SNARK
+        PS-->>P: Return valid Proof Data
+    end
     
     P->>N: Broadcast ZK Proof & Signal Token
     N->>N: Verify Proof, Reject if Signal Token exists
