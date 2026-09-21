@@ -21,109 +21,131 @@ export default function Home() {
 
 
   return (
-    <main className="w-full min-h-screen flex flex-col relative">
+    <main className="w-full min-h-screen flex flex-col relative bg-slate-50">
       
-      {/* Navigation */}
-      <header className="shrink-0 z-50 bg-[var(--color-cotton-bg)]/80 backdrop-blur-md border-b border-slate-300 shadow-sm felt-texture sticky top-0">
-        <nav className="flex flex-col sm:flex-row justify-between items-center w-full px-4 sm:px-[var(--spacing-container-padding)] py-4 max-w-7xl mx-auto">
-          <div className="w-full sm:w-auto flex justify-between items-center">
-            <div className="flex items-center gap-2 text-slate-800">
-              <Logo className="text-slate-800" />
-              <h1 className="font-headline-md font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 drop-shadow-md">QUIETSIGNAL</h1>
-            </div>
-            
-            <button 
-              className="sm:hidden text-slate-800 p-2 hover:bg-slate-200/50 rounded-full transition-colors"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <span className="material-symbols-outlined text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
-            </button>
-          </div>
-          
-          <div className={`${isMobileMenuOpen ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row gap-4 sm:gap-6 items-center w-full sm:w-auto mt-6 sm:mt-0`}>
-            <Link 
-              href="/dashboard" 
-              className="w-full sm:w-auto flex justify-center items-center gap-2 font-label-lg text-slate-700 hover:text-slate-900 transition-colors drop-shadow-sm bg-white/50 px-5 py-2.5 rounded-full inset-puffy border border-slate-200"
-            >
-              <span className="material-symbols-outlined text-[20px]">dashboard</span>
-              Dashboard
-            </Link>
-            
-            <div className="w-full sm:w-auto flex justify-center">
-              {walletConnected ? (
-                <WalletBadge />
-              ) : (
-                <button 
-                  onClick={() => connectWallet()}
-                  className="w-full sm:w-auto bg-white text-slate-800 px-6 py-2.5 rounded-full font-label-lg hover:bg-slate-100 transition-all active:scale-95 shadow-sm puffy-shadow felt-texture step-button border border-slate-200"
-                >
-                  Connect Wallet
-                </button>
-              )}
-            </div>
-          </div>
-        </nav>
-      </header>
-
-      {/* Hero Section */}
-      <div className="flex-1 flex flex-col items-center justify-center py-20 px-4 relative overflow-hidden">
-        {/* Floating background elements */}
-        <motion.div 
-          animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }} 
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-20 left-10 sm:left-20 text-slate-400 opacity-30 drop-shadow-md"
-        >
-          <span className="material-symbols-outlined text-8xl" style={{ fontVariationSettings: "'FILL' 1" }}>cloud</span>
-        </motion.div>
+      {/* Massive Top Textured Card Section */}
+      <div className="w-full flex flex-col relative felt-texture bg-[var(--color-cotton-pink)] z-10 shadow-[inset_0_0_120px_rgba(0,0,0,0.05)]">
         
-        <motion.div 
-          animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} 
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-20 right-10 sm:right-32 text-slate-400 opacity-30 drop-shadow-md"
-        >
-          <span className="material-symbols-outlined text-9xl" style={{ fontVariationSettings: "'FILL' 1" }}>cloud</span>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl felt-texture bg-[var(--color-cotton-pink)] rounded-[3rem] puffy-shadow p-8 sm:p-16 flex flex-col gap-8 items-center text-center relative z-10 mx-auto"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 inset-puffy shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-green-500"></span>
-            <span className="font-label-lg text-slate-800 font-bold uppercase tracking-widest text-xs drop-shadow-sm">Midnight Network Active</span>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <h1 className="font-headline-xl text-5xl sm:text-6xl text-slate-900 drop-shadow-md leading-tight font-bold">
-              Your opinion.
-            </h1>
-            <h1 className="font-headline-xl text-5xl sm:text-6xl text-blue-900 drop-shadow-md leading-tight font-bold">
-              Your privacy.
-            </h1>
-          </div>
-
-          <p className="font-body-lg text-slate-800 max-w-2xl font-medium drop-shadow-sm">
-            Collect honest signal without asking people to sacrifice their privacy. QUIETSIGNAL uses Zero-Knowledge proofs to verify participation while keeping individual responses cryptographically unlinked on the Midnight Blockchain.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-6 mt-4">
-            <Link 
-              href="/dashboard?tab=create"
-              className="bg-slate-800 text-white px-8 py-4 rounded-full font-label-lg text-lg hover:bg-slate-700 transition-all shadow-md puffy-shadow felt-texture step-button flex items-center justify-center gap-2"
-            >
-              <span>Create Survey</span>
-              <span className="material-symbols-outlined">arrow_forward</span>
-            </Link>
+        {/* Navigation */}
+        <header className="shrink-0 z-50 bg-white/20 backdrop-blur-md border-b border-white/30 shadow-sm sticky top-0">
+          <nav className="flex flex-col sm:flex-row justify-between items-center w-full px-4 sm:px-[var(--spacing-container-padding)] py-4 max-w-7xl mx-auto">
+            <div className="w-full sm:w-auto flex justify-between items-center">
+              <div className="flex items-center gap-2 text-slate-800">
+                <Logo className="text-slate-800" />
+                <h1 className="font-headline-md font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 drop-shadow-md">QUIETSIGNAL</h1>
+              </div>
+              
+              <button 
+                className="sm:hidden text-slate-800 p-2 hover:bg-slate-200/50 rounded-full transition-colors"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <span className="material-symbols-outlined text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+              </button>
+            </div>
             
-          </div>
-        </motion.div>
+            <div className={`${isMobileMenuOpen ? 'flex' : 'hidden'} sm:flex flex-col sm:flex-row gap-4 sm:gap-6 items-center w-full sm:w-auto mt-6 sm:mt-0`}>
+              <Link 
+                href="/dashboard" 
+                className="w-full sm:w-auto flex justify-center items-center gap-2 font-label-lg text-slate-700 hover:text-slate-900 transition-colors drop-shadow-sm bg-white/50 px-5 py-2.5 rounded-full inset-puffy border border-slate-200"
+              >
+                <span className="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+              </Link>
+              
+              <div className="w-full sm:w-auto flex justify-center">
+                {walletConnected ? (
+                  <WalletBadge />
+                ) : (
+                  <button 
+                    onClick={() => connectWallet()}
+                    className="w-full sm:w-auto bg-white text-slate-800 px-6 py-2.5 rounded-full font-label-lg hover:bg-slate-100 transition-all active:scale-95 shadow-sm puffy-shadow felt-texture step-button border border-slate-200"
+                  >
+                    Connect Wallet
+                  </button>
+                )}
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        {/* Hero Section */}
+        <div className="flex-1 flex flex-col items-center justify-center py-20 sm:py-28 px-4 sm:px-8 relative overflow-hidden">
+          {/* Floating background elements */}
+          <motion.div 
+            animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }} 
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-20 left-10 sm:left-20 text-slate-400 opacity-30 drop-shadow-md z-0"
+          >
+            <span className="material-symbols-outlined text-8xl" style={{ fontVariationSettings: "'FILL' 1" }}>cloud</span>
+          </motion.div>
+          
+          <motion.div 
+            animate={{ y: [0, 20, 0], rotate: [0, -10, 0] }} 
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute bottom-20 right-10 sm:right-32 text-slate-400 opacity-30 drop-shadow-md z-0"
+          >
+            <span className="material-symbols-outlined text-9xl" style={{ fontVariationSettings: "'FILL' 1" }}>cloud</span>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full max-w-6xl flex flex-col gap-10 items-center text-center relative z-10 mx-auto"
+          >
+            {/* Debossed Pill Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/50 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] border border-white/40 z-20">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+              <span className="font-label-lg text-slate-700 font-bold uppercase tracking-widest text-xs">Midnight Network Active</span>
+            </div>
+
+            {/* Realistic Engraved Paper Typography */}
+            <div className="flex flex-col gap-2 z-20">
+              <h1 className="font-headline-xl text-6xl sm:text-7xl md:text-[5.5rem] font-bold tracking-tight"
+                  style={{
+                    color: "rgba(30, 41, 59, 0.9)", // Deep slate
+                    textShadow: "1px 2px 3px rgba(255,255,255,1), -1px -2px 3px rgba(0,0,0,0.12)"
+                  }}>
+                Your voice.
+              </h1>
+              <h1 className="font-headline-xl text-6xl sm:text-7xl md:text-[5.5rem] font-bold tracking-tight"
+                  style={{
+                    color: "rgba(30, 64, 175, 0.9)", // Deep blue
+                    textShadow: "1px 2px 3px rgba(255,255,255,1), -1px -2px 3px rgba(0,0,0,0.12)"
+                  }}>
+                Your privacy.
+              </h1>
+            </div>
+
+            {/* Engraved Subtitle Description */}
+            <p 
+              className="font-body-lg text-slate-700 max-w-4xl font-medium text-lg sm:text-xl leading-relaxed px-4 z-20"
+              style={{ 
+                color: "rgba(51, 65, 85, 0.8)", 
+                textShadow: "1px 1px 2px rgba(255,255,255,0.9), -1px -1px 1px rgba(0,0,0,0.05)" 
+              }}
+            >
+              Collect honest signal without asking people to sacrifice their privacy. QUIETSIGNAL uses Zero-Knowledge proofs to verify participation while keeping individual responses cryptographically unlinked on the Midnight Blockchain.
+            </p>
+
+            {/* Puffy CTA Button */}
+            <div className="mt-4 z-20">
+              <Link 
+                href="/dashboard?tab=create"
+                className="bg-slate-800 text-white px-10 py-5 rounded-full font-label-lg text-xl hover:bg-slate-700 transition-all shadow-md puffy-shadow felt-texture step-button flex items-center justify-center gap-3 group"
+              >
+                <span style={{ textShadow: "0 -1px 1px rgba(0,0,0,0.4)" }}>Create Survey</span>
+                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </div>
+      
       {/* Feature Section */}
-      <div className="w-full bg-[var(--color-cotton-lavender)] py-24 felt-texture relative border-t border-slate-900/5">
+      <div className="w-full bg-[var(--color-cotton-lavender)] py-24 felt-texture relative border-t border-slate-900/5 z-20">
         {/* Ultra-Polished Whip Stitch exactly on the Junction */}
-        <div className="absolute left-0 right-0 top-[-12px] h-[24px] w-full z-20 pointer-events-none drop-shadow-sm opacity-90">
+        <div className="absolute left-0 right-0 top-[-12px] h-[24px] w-full pointer-events-none drop-shadow-sm opacity-90">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <filter id="whip-shadow" x="-20%" y="-20%" width="140%" height="140%">

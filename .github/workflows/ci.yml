@@ -1,4 +1,4 @@
-name: VEIL CI/CD Pipeline
+name: QUIETSIGNAL CI/CD Pipeline
 
 on:
   push:

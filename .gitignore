@@ -1,2 +1,12 @@
+# Internal reference files
 helping-files/
 docs/X_LAUNCH_TWEETS.md
+
+# Runtime LevelDB cache
+backend/midnight-level-db/
+
+# Debug/deployment scripts
+backend/siege.sh
+
+# Runtime data files
+frontend/data/
