@@ -138,7 +138,7 @@ The `quietsignal.compact` smart contract was successfully deployed to the Midnig
 **Transaction Hash:** [`0x72c31715b5e88de177eb593aa0a37d474739f54b7cf1e5c9a11585b96e022392`](https://preprod.midnightexplorer.com/transactions/0x72c31715b5e88de177eb593aa0a37d474739f54b7cf1e5c9a11585b96e022392)
 
 *What happened on-chain?* 
-The transaction successfully invoked the `broadcastSignal` circuit. The Midnight network verified the Zero-Knowledge proof generated locally on the client. It securely updated the `topics` tally increment and permanently added the user's secret hash to the `signalTokens` set, thereby preventing replay attacks or double-signaling without exposing the wallet's identity.
+The transaction successfully invoked the `broadcastSignal` circuit. The Midnight network verified the Zero-Knowledge proof (ZK-SNARK) generated locally by the participant's client. Upon cryptographic verification, the network securely incremented the `topics` tally state by 1 and permanently appended the 32-byte secret witness hash to the `signalTokens` set. This strict state transition mathematically prevents replay attacks and double-signaling without ever exposing the wallet address of the broadcaster.
 
 <details open>
 <summary><b>View Successful ZK-Proof Transaction</b></summary>
@@ -249,15 +249,15 @@ Visit `http://localhost:3000` in your browser.
 
 ## ✧ PRIVACY MODEL: WHAT AN OBSERVER CAN AND CANNOT LEARN
 
-QuietSignal strictly adheres to Midnight's Selective Disclosure architecture.
+QuietSignal rigorously enforces Midnight's Selective Disclosure architecture, guaranteeing that sensitive participant data is never exposed.
 
 ### ◉ PUBLIC STATE (What an Observer CAN Learn)
-- **Topic Exists:** An observer can read the `topics` mapping on the ledger to see the 32-byte Topic ID and the public tally of total signals broadcast.
-- **Signal Token Set:** An observer can see a list of random 32-byte hashes added to the `signalTokens` set, indicating that *someone* has signaled.
+- **Topic Existence:** Any observer can inspect the `topics` mapping on the ledger to read the 32-byte Topic ID and view the aggregate tally of total signals broadcasted.
+- **Signal Token Set:** Observers can view the `signalTokens` set, which contains a list of random 32-byte cryptographic hashes. This simply indicates that *someone* has signaled, but reveals absolutely no correlation to their identity.
 
 ### ◉ PRIVATE WITNESS (What an Observer CANNOT Learn)
-- **Participant Identity:** The identity is protected by a dynamically generated, cryptographically secure 32-byte random seed (`crypto.getRandomValues()`) stored strictly in the user's browser `localStorage`. This seed acts as a persistent private witness to generate the ZK nullifier. The Wallet Address is NEVER exposed on-chain.
-- **Double-Signaling Attempts:** Observers only see that an anonymous transaction was mathematically rejected by the smart contract due to a zero-knowledge signal token collision. They cannot determine *who* attempted the double-signal.
+- **Participant Identity:** The user's identity is protected by a dynamically generated, cryptographically secure 32-byte random seed (`crypto.getRandomValues()`) that never leaves the browser's `localStorage`. This seed acts as a persistent private witness to generate the ZK nullifier. The participant's Wallet Address is **never** exposed on-chain.
+- **Double-Signaling Attempts:** If a malicious actor attempts to signal twice, observers only see that an anonymous transaction was mathematically rejected by the smart contract due to a zero-knowledge signal token collision. They cannot determine *who* attempted the double-signal.
 
 ---
 
