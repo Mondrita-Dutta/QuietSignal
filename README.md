@@ -22,7 +22,7 @@
 *   **⎈ Network**: Midnight Preprod Testnet
 *   **▤ GitHub Repository**: [https://github.com/Mondrita-Dutta/QuietSignal](https://github.com/Mondrita-Dutta/QuietSignal)
 *   **⌁ Live Demo**: [https://quiet-signal-bice.vercel.app/](https://quiet-signal-bice.vercel.app/)
-*   **▷ Demo Video**: [[TO BE PROVIDED BY USER]]
+*   **▷ Demo Video**: [Watch on YouTube](https://youtu.be/SsHqEnpHKm4)
 *   **🐦 Product X Profile**: [[TO BE PROVIDED BY USER]]
 *   **⚙ Smart Contract**: [`quietsignal.compact`](./backend/contracts/quietsignal.compact)
 *   **⌖ Contract Address**: [`0x2cbe0f07410cee0dbab1dba091aa8484cf04a633c274a9f22e64292592fda422`](https://preprod.midnightexplorer.com/contracts/0x2cbe0f07410cee0dbab1dba091aa8484cf04a633c274a9f22e64292592fda422)
@@ -74,7 +74,7 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **Preprod Deployment (Verifiable)**| ✓ **Verified** | Contract is verified on the Midnight Explorer at `0x2cbe0f...`. |
 | **Minimum 8 Meaningful Commits** | ✓ **Verified** | Commits far exceed the requirement. |
 | **Live Demo Link** | ✓ **Verified** | [quiet-signal-bice.vercel.app](https://quiet-signal-bice.vercel.app/) |
-| **Demo Video (Connect + Circuit Call)**| ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
+| **Demo Video (Connect + Circuit Call)**| ✓ **Verified** | [Watch on YouTube](https://youtu.be/SsHqEnpHKm4) |
 | **Document Privacy Claim** | ✓ **Verified** | The exact privacy guarantees of the Selective Disclosure architecture are documented. |
 
 ### ❂ Level 3 Submission Requirements
@@ -88,7 +88,7 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **Minimum 10 Meaningful Commits**| ✓ **Verified** | Repository history perfectly aligns with the requirement. |
 | **Screenshot: Test Output** | ✓ **Verified** | Provided in the "Passing Suite" deliverables section below. |
 | **CI/CD Badge & Passing Runs** | ✓ **Verified** | Provided in the "Unified CI/CD Pipeline" deliverables section below. |
-| **Demo Video (Full Functionality)**| ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
+| **Demo Video (Full Functionality)**| ✓ **Verified** | [Watch on YouTube](https://youtu.be/SsHqEnpHKm4) |
 | **Privacy Model "Observer"** | ✓ **Verified** | Detailed in the Privacy Model section, explicitly stating what a passive observer can and cannot learn. |
 
 ### ◑ Level 4 Submission Requirements
@@ -101,7 +101,7 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **Product X Profile Created** | ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
 | **Minimum 15 Meaningful Commits** | ✓ **Verified** | Over 60 semantic commits demonstrating iterative, genuine development. |
 | **Live Preprod Demo Link** | ✓ **Verified** | [quiet-signal-bice.vercel.app](https://quiet-signal-bice.vercel.app/) |
-| **Demo Video of MVP** | ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
+| **Demo Video of MVP** | ✓ **Verified** | [Watch on YouTube](https://youtu.be/SsHqEnpHKm4) |
 | **Product Proposal** | ✓ **Verified** | Complete proposal at [`docs/PROPOSAL.md`](./docs/PROPOSAL.md). |
 
 ---
