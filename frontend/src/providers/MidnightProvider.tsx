@@ -16,7 +16,6 @@ interface MidnightContextType {
   connectWallet: () => Promise<void>;
   disconnectWallet: () => void;
   generateProofAndSubmit: (answers: Record<string, any>, topicId: string, issuerPublicKeyBase64: string) => Promise<string>;
-  deploySmartContract: () => Promise<string>;
 }
 
 export function toHex(bytes: Uint8Array): string {
@@ -58,14 +57,6 @@ export function createPatchedPublicDataProvider(base: any, queryUrl: string) {
       );
       return action ? ContractState.deserialize(fromHex(action.state)) : null;
     },
-    async watchForTxData(txId: string) {
-      console.log('[QUIETSIGNAL] Bypassing broken SDK WebSocket to prevent UI hang for tx:', txId);
-      return { public: { txHash: txId, blockHeight: 1 }, private: {} } as any;
-    },
-    async watchForDeployTxData(contractAddress: string) {
-      console.log('[QUIETSIGNAL] Bypassing broken SDK WebSocket for deploy:', contractAddress);
-      return { public: { contractAddress, blockHeight: 1 }, private: {} } as any;
-    }
   };
 }
 
@@ -361,11 +352,12 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
             try {
               accountId = (await api.getShieldedAddresses()).shieldedAddress;
             } catch (e2) {
-              accountId = 'anonymous-quietsignal-account-' + Date.now();
+              accountId = 'anonymous-quietsignal-account-fallback';
             }
           }
 
-          const basePublicDataProvider = indexerPublicDataProvider(config.indexerUri, config.indexerWsUri);
+          const wsUri = config.indexerWsUri || config.indexerUri.replace(/^http/, 'ws').replace(/\/graphql\/?$/, '/graphql/ws');
+          const basePublicDataProvider = indexerPublicDataProvider(config.indexerUri, wsUri);
           const providers: any = {
             privateStateProvider: levelPrivateStateProvider({
               privateStateStoreName: 'quietsignal-state-v1',
@@ -395,12 +387,12 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
           }
 
           // Generate or retrieve persistent user secret for the nullifier
-          let userSecretHex = localStorage.getItem('quietsignal_user_secret');
+          let userSecretHex = sessionStorage.getItem('quietsignal_user_secret');
           if (!userSecretHex) {
             const arr = new Uint8Array(32);
             crypto.getRandomValues(arr);
             userSecretHex = Array.from(arr).map(b => b.toString(16).padStart(2, '0')).join('');
-            localStorage.setItem('quietsignal_user_secret', userSecretHex);
+            sessionStorage.setItem('quietsignal_user_secret', userSecretHex);
           }
           
           const secretBytes = new Uint8Array(32);
@@ -552,32 +544,7 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
           const tx = await contract.callTx.broadcastSignal(topicBytes);
           txHash = tx.public.txHash;
         } catch (callError: any) {
-          // 1. Handle Testnet Congestion (Transaction already pending)
-          // If the network is lagging, the wallet will reject new submissions because one is already in the mempool.
-          if (callError.message && callError.message.toLowerCase().includes('pending')) {
-            console.log('[QUIETSIGNAL] Transaction already pending in mempool. Bypassing UI wait!');
-            txHash = 'pending_' + Date.now();
-          } 
-          // 2. Handle SDK Validation Bug
-          // The Midnight SDK throws our mocked FinalizedTxData object because it fails some internal validation.
-          // We can rescue the txHash directly from the stringified JSON error message!
-          else if (callError.message && callError.message.includes('"txHash"')) {
-            try {
-              const jsonStart = callError.message.indexOf('{');
-              if (jsonStart !== -1) {
-                const parsed = JSON.parse(callError.message.substring(jsonStart));
-                if (parsed?.public?.txHash) {
-                  txHash = parsed.public.txHash;
-                }
-              }
-            } catch (parseError) {
-              console.error('Failed to parse thrown tx object:', parseError);
-            }
-          }
-          
-          if (!txHash) {
-             throw callError; // Re-throw if it wasn't our mocked object or a pending error
-          }
+          throw callError;
         }
         
         console.log('[QUIETSIGNAL] Transaction Successful! TxHash:', txHash);
@@ -610,72 +577,10 @@ export function MidnightProvider({ children }: { children: React.ReactNode }) {
       }
     });
   };
-  const deploySmartContract = async () => {
-    await ensureConnection();
-    const providers = midnightProvidersRef.current;
-    const compiled = compiledContractRef.current;
-    if (!providers || !compiled) {
-      throw new Error('Midnight providers not initialized');
-    }
-    
-    return new Promise<string>(async (resolve, reject) => {
-      try {
-        console.log('[QUIETSIGNAL] Deploying Smart Contract via Midnight Wallet (UnprovenTx approach)...');
-        const { createUnprovenDeployTx, submitTxAsync } = await import('@midnight-ntwrk/midnight-js-contracts');
-        const { sampleSigningKey } = await import('@midnight-ntwrk/compact-runtime');
-        
-        console.log('[QUIETSIGNAL] Creating unproven deploy transaction...');
-        const deployTxData = await createUnprovenDeployTx(providers, {
-          compiledContract: compiled,
-          args: [],
-          initialPrivateState: {},
-          signingKey: sampleSigningKey(),
-        } as any);
-
-        const contractAddress = deployTxData.public.contractAddress;
-        console.log('[QUIETSIGNAL] Pre-computed Contract Address:', contractAddress);
-        
-        console.log('[QUIETSIGNAL] Submitting transaction via Lace/1A.M....');
-        try {
-          await submitTxAsync(providers, {
-            unprovenTx: deployTxData.private.unprovenTx,
-          } as any);
-        } catch (submitErr: any) {
-          // Lace wallet sometimes throws the success object instead of returning it!
-          // Let's check if the thrown object contains a txHash indicating success.
-          if (submitErr && submitErr.public && submitErr.public.txHash) {
-            console.warn('[QUIETSIGNAL] Lace threw the success object, ignoring the error:', submitErr);
-          } else {
-            throw submitErr;
-          }
-        }
-
-        console.log('[QUIETSIGNAL] Deployment Successful!');
-        console.log('[QUIETSIGNAL] Contract Address:', contractAddress);
-        
-        // Update local state
-        localStorage.setItem('QUIETSIGNAL_DEPLOYED_CONTRACT_ADDRESS', contractAddress);
-        setContractAddress(contractAddress);
-        contractAddressRef.current = contractAddress;
-        resolve(contractAddress);
-      } catch (e: any) {
-        console.error('[QUIETSIGNAL] Contract deployment failed', e);
-        
-        let errorMsg = e?.message ?? String(e);
-        if (typeof e === 'object' && !e.message) {
-          errorMsg = JSON.stringify(e, null, 2);
-        }
-        
-        alert('Failed to deploy contract: ' + errorMsg);
-        reject(e);
-      }
-    });
-  };
-
   return (
     <MidnightContext.Provider value={{ 
       walletConnected, walletAddress, walletBalance, isConnecting, networkId,
-      connectWallet, disconnectWallet, generateProofAndSubmit, deploySmartContract 
+      connectWallet, disconnectWallet, generateProofAndSubmit 
     }}>
       {children}
 

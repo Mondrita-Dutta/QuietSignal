@@ -23,7 +23,7 @@
 *   **▤ GitHub Repository**: [https://github.com/Mondrita-Dutta/QuietSignal](https://github.com/Mondrita-Dutta/QuietSignal)
 *   **⌁ Live Demo**: [https://quiet-signal-bice.vercel.app/](https://quiet-signal-bice.vercel.app/)
 *   **▷ Demo Video**: [Watch on YouTube](https://youtu.be/SsHqEnpHKm4)
-*   **🐦 Product X Profile**: [[TO BE PROVIDED BY USER]]
+*   **🐦 Product X Profile**: [https://x.com/QuietSignalApp](https://x.com/QuietSignalApp)
 *   **⚙ Smart Contract**: [`quietsignal.compact`](./backend/contracts/quietsignal.compact)
 *   **⌖ Contract Address**: [`0x2cbe0f07410cee0dbab1dba091aa8484cf04a633c274a9f22e64292592fda422`](https://preprod.midnightexplorer.com/contracts/0x2cbe0f07410cee0dbab1dba091aa8484cf04a633c274a9f22e64292592fda422)
 

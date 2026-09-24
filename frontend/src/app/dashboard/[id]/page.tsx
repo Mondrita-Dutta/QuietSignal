@@ -62,7 +62,7 @@ export default function TopicDetails() {
       if (campData.found) setTopic(campData.topic);
       if (feedData.records) {
         const { decryptSignal } = await import('@/utils/crypto');
-        const issuerPrivateKey = localStorage.getItem(`quietsignal_issuer_key_${topicId}`);
+        const issuerPrivateKey = sessionStorage.getItem(`quietsignal_issuer_key_${topicId}`);
         
         const decryptedRecords = await Promise.all(feedData.records.map(async (r: any) => {
           if (r.encryptedAnswers && r.iv && r.encryptedAesKey && issuerPrivateKey) {

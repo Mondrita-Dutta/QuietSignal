@@ -135,8 +135,8 @@ export default function Dashboard() {
       });
       const data = await res.json();
       if(data.success) {
-        // Securely store the private key locally
-        localStorage.setItem(`quietsignal_issuer_key_${data.topic.id}`, privateKey);
+        // Securely store the private key ephemerally in session storage
+        sessionStorage.setItem(`quietsignal_issuer_key_${data.topic.id}`, privateKey);
 
         setTopics([...topics, data.topic]);
         setTitle('');
