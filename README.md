@@ -98,7 +98,7 @@ When a user broadcasts a signal, their identity (Wallet ID) and the signal conte
 | **Working MVP on Preprod** | ✓ **Verified** | Fully functional dApp deployed to hosting. Contract `0x2cbe0f...` live on Midnight Preprod with verifiable on-chain state. |
 | **Documentation (README + Setup + Usage)** | ✓ **Verified** | Comprehensive README with setup instructions. User-facing usage guide at [`docs/USAGE.md`](./docs/USAGE.md). |
 | **CI/CD Pipeline Running** | ✓ **Verified** | `.github/workflows/ci.yml` with genuine Compact Compiler download, circuit compilation, and test execution. |
-| **Product X Profile Created** | ✓ **Pending** | `[TO BE PROVIDED BY USER]` |
+| **Product X Profile Created** | ✓ **Verified** | [https://x.com/QuietSignalApp](https://x.com/QuietSignalApp) |
 | **Minimum 15 Meaningful Commits** | ✓ **Verified** | Over 60 semantic commits demonstrating iterative, genuine development. |
 | **Live Preprod Demo Link** | ✓ **Verified** | [quiet-signal-bice.vercel.app](https://quiet-signal-bice.vercel.app/) |
 | **Demo Video of MVP** | ✓ **Verified** | [Watch on YouTube](https://youtu.be/SsHqEnpHKm4) |
@@ -339,7 +339,7 @@ QuietSignal's detailed product proposal — covering target users, Midnight just
 
 ## ✧ PRODUCT X PROFILE
 
-**🐦 [Follow QuietSignal on X]([TO BE PROVIDED BY USER])**
+**🐦 [Follow QuietSignal on X](https://x.com/QuietSignalApp)**
 
 ---
 
